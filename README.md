@@ -1,4 +1,4 @@
-# warble-json-schmea
+# warble-json-schema
 > :triangular_ruler: :musical_score: JSON Schema definition for the `warble.json` format
 ---
 
