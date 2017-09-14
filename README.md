@@ -1,5 +1,5 @@
 # warble-json-schema
-> :triangular_ruler: :musical_score: JSON Schema definition for the `warble.json` format
+> :musical_score: :triangular_ruler: JSON Schema definition for the `warble.json` format
 ---
 
 ## Language
