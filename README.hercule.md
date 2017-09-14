@@ -8,7 +8,7 @@
 
 Compilation of `warble` tracks results in `warble.json` data, a JSON micro-format that makes writing `warble` interpreters/engines incredibly simple.
 
-This repository contains the official JSON Schema definition of the `warble.json` micro-format.
+This repository contains the official [JSON Schema](http://json-schema.org/) definition of the `warble.json` micro-format.
 
 ## Media Type
 
