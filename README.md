@@ -56,7 +56,7 @@ This repository contains the official [JSON Schema](http://json-schema.org/) def
     },
     "element": {
       "type": "string",
-      "pattern": "^(Note|Scale|Chord|Rest|#|~)$"
+      "pattern": "^(Note|Scale|Chord|Rest|Mode|Triad|#|~)$"
     },
     "arguments": {
       "type": "array",
