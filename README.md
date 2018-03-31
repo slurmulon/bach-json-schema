@@ -1,18 +1,18 @@
-# warble-json-schema
-> :musical_score: :triangular_ruler: JSON Schema definition for the `warble.json` format
+# bach-json-schema
+> :musical_score: :triangular_ruler: JSON Schema definition for the `bach.json` format
 ---
 
 ## Language
 
-[`warble`](https://github.com/slurmulon/warble) is a notation for representing musical tracks with a focus on readability and productivity.
+[`bach`](https://github.com/slurmulon/bach) is a notation for representing musical tracks with a focus on readability and productivity.
 
-Compilation of `warble` tracks results in `warble.json` data, a JSON micro-format that makes writing `warble` interpreters/engines incredibly simple.
+Compilation of `bach` tracks results in `bach.json` data, a JSON micro-format that makes writing `bach` interpreters/engines incredibly simple.
 
-This repository contains the official [JSON Schema](http://json-schema.org/) definition of the `warble.json` micro-format.
+This repository contains the official [JSON Schema](http://json-schema.org/) definition of the `bach.json` micro-format.
 
 ## Media Type
 
-`application/vnd.warble+json`
+`application/vnd.bach+json`
 
 ## Schema
 

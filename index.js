@@ -1,1 +1,1 @@
-module.exports = require('./warble.schema.json')
+module.exports = require('./bach.schema.json')
