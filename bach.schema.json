@@ -23,7 +23,7 @@
           "type": "number",
           "minimum": 0
         },
-        "lowest-beat": {
+        "pulse-beat": {
           "type": "number",
           "minimum": 0.001953125
         },
@@ -32,7 +32,7 @@
           "minimum": 1
         }
       },
-      "required": ["title", "time", "tempo", "total-beats", "lowest-beat", "ms-per-beat"],
+      "required": ["title", "time", "tempo", "total-beats", "pulse-beat", "ms-per-beat"],
       "additionalProperties": true
     },
     "element": {
