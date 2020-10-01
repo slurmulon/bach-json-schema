@@ -4,13 +4,11 @@
     "headers": {
       "type": "object",
       "properties": {
-        "title": {
-          "type": "string"
-        },
-        "time": {
+        "meter": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "number",
+            "minimum": 1
           },
           "minItems": 2,
           "maxItems": 2
@@ -19,20 +17,44 @@
           "type": "number",
           "minimum": 0
         },
-        "total-beats": {
+        "beat-unit": {
           "type": "number",
-          "minimum": 0
+          "minimum": 0.001953125
         },
         "pulse-beat": {
           "type": "number",
           "minimum": 0.001953125
         },
-        "ms-per-beat": {
+        "beat-units-per-measure": {
+          "type": "number",
+          "minimum": 0
+        },
+        "pulse-beats-per-measure": {
+          "type": "number",
+          "minimum": 0
+        },
+        "total-beats": {
+          "type": "number",
+          "minimum": 0
+        },
+        "total-beat-units": {
+          "type": "number",
+          "minimum": 0
+        },
+        "total-pulse-beats": {
+          "type": "number",
+          "minimum": 0
+        },
+        "ms-per-pulse-beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "ms-per-beat-unit": {
           "type": "number",
           "minimum": 1
         }
       },
-      "required": ["title", "time", "tempo", "total-beats", "pulse-beat", "ms-per-beat"],
+      "required": ["meter", "tempo", "beat-unit", "pulse-beat", "beat-units-per-measure", "pulse-beats-per-measure", "total-beats", "total-beat-units", "total-pulse-beats", "ms-per-pulse-beat", "ms-per-beat-unit"],
       "additionalProperties": true
     },
     "element": {
@@ -45,24 +67,14 @@
         "type": "string"
       }
     },
-    "note": {
+    "item": {
       "type": "object",
       "properties": {
-        "atom": {
-          "type": "object",
-          "properties": {
-            "init": {
-              "type": "object",
-              "properties": {
-                "arguments": {
-                  "$ref": "#/definitions/arguments"
-                }
-              },
-              "keyword": {
-                "$ref": "#/definitions/element"
-              }
-            }
-          }
+        "keyword": {
+          "$ref": "#/definitions/element"
+        },
+        "arguments": {
+          "$ref": "#/definitions/arguments"
         }
       }
     },
@@ -74,21 +86,14 @@
             "duration": {
               "type": "number"
             },
-            "notes": {
-              "oneOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/note"
-                  }
-                },
-                {
-                  "$ref": "#/definitions/note"
-                }
-              ]
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/item"
+              }
             }
           },
-          "required": ["duration", "notes"]
+          "required": ["duration", "items"]
         },
         {
           "type": "null"
