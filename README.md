@@ -18,18 +18,16 @@ This repository contains the official [JSON Schema](http://json-schema.org/) def
 
 ```
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft-06/schema#",
   "definitions": {
     "headers": {
       "type": "object",
       "properties": {
-        "title": {
-          "type": "string"
-        },
-        "time": {
+        "meter": {
           "type": "array",
           "items": {
-            "type": "number"
+            "type": "number",
+            "minimum": 1
           },
           "minItems": 2,
           "maxItems": 2
@@ -38,20 +36,44 @@ This repository contains the official [JSON Schema](http://json-schema.org/) def
           "type": "number",
           "minimum": 0
         },
+        "beat-unit": {
+          "type": "number",
+          "minimum": 0.001953125
+        },
+        "pulse-beat": {
+          "type": "number",
+          "minimum": 0.001953125
+        },
+        "beat-units-per-measure": {
+          "type": "number",
+          "minimum": 0
+        },
+        "pulse-beats-per-measure": {
+          "type": "number",
+          "minimum": 0
+        },
         "total-beats": {
           "type": "number",
           "minimum": 0
         },
-        "lowest-beat": {
+        "total-beat-units": {
           "type": "number",
-          "minimum": 0.001953125
+          "minimum": 0
         },
-        "ms-per-beat": {
+        "total-pulse-beats": {
+          "type": "number",
+          "minimum": 0
+        },
+        "ms-per-pulse-beat": {
+          "type": "number",
+          "minimum": 1
+        },
+        "ms-per-beat-unit": {
           "type": "number",
           "minimum": 1
         }
       },
-      "required": ["title", "time", "tempo", "total-beats", "lowest-beat", "ms-per-beat"],
+      "required": ["meter", "tempo", "beat-unit", "pulse-beat", "beat-units-per-measure", "pulse-beats-per-measure", "total-beats", "total-beat-units", "total-pulse-beats", "ms-per-pulse-beat", "ms-per-beat-unit"],
       "additionalProperties": true
     },
     "element": {
@@ -64,24 +86,14 @@ This repository contains the official [JSON Schema](http://json-schema.org/) def
         "type": "string"
       }
     },
-    "note": {
+    "item": {
       "type": "object",
       "properties": {
-        "atom": {
-          "type": "object",
-          "properties": {
-            "init": {
-              "type": "object",
-              "properties": {
-                "arguments": {
-                  "$ref": "#/definitions/arguments"
-                }
-              },
-              "keyword": {
-                "$ref": "#/definitions/element"
-              }
-            }
-          }
+        "keyword": {
+          "$ref": "#/definitions/element"
+        },
+        "arguments": {
+          "$ref": "#/definitions/arguments"
         }
       }
     },
@@ -93,21 +105,14 @@ This repository contains the official [JSON Schema](http://json-schema.org/) def
             "duration": {
               "type": "number"
             },
-            "notes": {
-              "oneOf": [
-                {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/note"
-                  }
-                },
-                {
-                  "$ref": "#/definitions/note"
-                }
-              ]
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/item"
+              }
             }
           },
-          "required": ["duration", "notes"]
+          "required": ["duration", "items"]
         },
         {
           "type": "null"
