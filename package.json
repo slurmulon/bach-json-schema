@@ -1,6 +1,6 @@
 {
   "name": "bach-json-schema",
-  "version": "0.0.0",
+  "version": "2.0.0",
   "description": "JSON Schema definition for the bach.json format",
   "main": "index.js",
   "scripts": {
@@ -25,5 +25,6 @@
   "homepage": "https://github.com/slurmulon/bach-json-schema#readme",
   "devDependencies": {
     "hercule": "^4.1.0"
-  }
+  },
+  "dependencies": {}
 }
