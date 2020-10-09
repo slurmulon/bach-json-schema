@@ -78,7 +78,7 @@ This repository contains the official [JSON Schema](http://json-schema.org/) def
     },
     "element": {
       "type": "string",
-      "pattern": "^(Note|Scale|Chord|Rest|Mode|Triad|#|~)$"
+      "pattern": "^(~|#|[a-zA-Z_]+[a-zA-Z0-9_-]*)$"
     },
     "arguments": {
       "type": "array",
