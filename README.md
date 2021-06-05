@@ -4,9 +4,9 @@
 
 ## Language
 
-[`bach`](https://github.com/slurmulon/bach) is a notation for representing musical tracks with a focus on readability and productivity.
+[`bach`](https://github.com/slurmulon/bach) is a semantic music notation that allows rhytmic timelines to be defined with text.
 
-Compilation of `bach` tracks results in `bach.json` data, a JSON micro-format that makes writing `bach` interpreters/engines incredibly simple.
+Compilation of `bach` tracks results in `bach.json` data, a JSON micro-format that makes writing performant `bach` engines incredibly simple (see [gig](https://github.com/slurmulon/gig)).
 
 This repository contains the official [JSON Schema](http://json-schema.org/) definition of the `bach.json` micro-format.
 
@@ -18,7 +18,7 @@ This repository contains the official [JSON Schema](http://json-schema.org/) def
 
 ```
 {
-  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "headers": {
       "type": "object",
@@ -35,110 +35,196 @@ This repository contains the official [JSON Schema](http://json-schema.org/) def
         "tempo": {
           "type": "number",
           "minimum": 0
-        },
-        "beat-unit": {
-          "type": "number",
-          "minimum": 0.001953125
-        },
-        "pulse-beat": {
-          "type": "number",
-          "minimum": 0.001953125
-        },
-        "beat-units-per-measure": {
-          "type": "number",
-          "minimum": 0
-        },
-        "pulse-beats-per-measure": {
-          "type": "number",
-          "minimum": 0
-        },
-        "total-beats": {
-          "type": "number",
-          "minimum": 0
-        },
-        "total-beat-units": {
-          "type": "number",
-          "minimum": 0
-        },
-        "total-pulse-beats": {
-          "type": "number",
-          "minimum": 0
-        },
-        "ms-per-pulse-beat": {
-          "type": "number",
-          "minimum": 1
-        },
-        "ms-per-beat-unit": {
-          "type": "number",
-          "minimum": 1
         }
       },
-      "required": ["meter", "tempo", "beat-unit", "pulse-beat", "beat-units-per-measure", "pulse-beats-per-measure", "total-beats", "total-beat-units", "total-pulse-beats", "ms-per-pulse-beat", "ms-per-beat-unit"],
+      "required": ["meter", "tempo"],
       "additionalProperties": true
     },
-    "element": {
-      "type": "string",
-      "pattern": "^(~|#|[a-zA-Z_]+[a-zA-Z0-9_-]*)$"
+    "unit": {
+      "type": "object",
+      "properties": {
+        "step": {
+          "type": "number",
+          "minimum": 0
+        },
+        "pulse": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": ["step", "pulse"]
     },
-    "arguments": {
+    "units": {
+      "type": "object",
+      "properties": {
+        "beat": {
+          "$ref": "#/definitions/unit"
+        },
+        "bar": {
+          "$ref": "#/definitions/unit"
+        },
+        "time": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/unit"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "bar": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          ]
+        }
+      },
+      "required": ["beat", "bar", "time"],
+      "additionalProperties": false
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "min": {
+          "type": "number",
+          "minimum": 0
+        },
+        "max": {
+          "type": "number",
+          "minimum": 0
+        },
+        "total": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": ["min", "max", "total"],
+      "additionalProperties": false
+    },
+    "elements": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "type": "object",
+          "patternProperties": {
+            ".*": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string"
+                },
+                "props": {
+                  "type": "array",
+                  "default": []
+                }
+              },
+              "required": ["value", "props"],
+              "additionalProperties": false
+            }
+          }
+        }
+      }
+    },
+    "steps": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "array",
+        "items": [
+          {
+            "type": "array",
+            "items": [
+              { "type": "number" }
+            ],
+            "additionalItems": {
+              "$ref": "#/definitions/id"
+            },
+            "minItems": 1
+          },
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/id"
+            }
+          },
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/id"
+            }
+          }
+        ],
+        "minItems": 0,
+        "additionalItems": false
       }
+    },
+    "id": {
+      "type": "string",
+      "pattern": "[a-zA-Z0-9_-]+\\.[a-zA-Z0-9]{6,}"
+    },
+    "uid": {
+      "type": "string",
+      "pattern": "[a-zA-Z0-9]{6,}"
     },
     "item": {
       "type": "object",
       "properties": {
-        "keyword": {
-          "$ref": "#/definitions/element"
+        "duration": {
+          "type": "number",
+          "minimum": 0
         },
-        "arguments": {
-          "$ref": "#/definitions/arguments"
+        "elements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/id"
+          }
         }
-      }
+      },
+      "required": ["duration", "elements"]
     },
     "beat": {
-      "oneOf": [
-        {
-          "type": "object",
-          "properties": {
-            "duration": {
-              "type": "number"
-            },
-            "items": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/item"
-              }
-            }
-          },
-          "required": ["duration", "items"]
+      "type": "object",
+      "properties": {
+        "duration": {
+          "type": "number"
         },
-        {
-          "type": "null"
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/item"
+          }
         }
-      ]
+      },
+      "required": ["duration", "items"]
     }
   },
 
   "type": "object",
   "properties": {
     "headers": {
-      "type": "object"
+      "$ref": "#/definitions/headers"
     },
-    "data": {
+    "units": {
+      "$ref": "#/definitions/units"
+    },
+    "metrics": {
+      "$ref": "#/definitions/metrics"
+    },
+    "elements": {
+      "$ref": "#/definitions/elements"
+    },
+    "steps": {
+      "$ref": "#/definitions/steps"
+    },
+    "beats": {
       "type": "array",
       "items": {
-        "type": "array",
-        "items": {
-          "$ref": "#/definitions/beat"
-        }
+        "$ref": "#/definitions/beat"
       }
     }
   },
-  "required": ["headers", "data"]
+  "required": ["headers", "units", "metrics", "elements", "steps", "beats"]
 }
-
 ```
 
 ## License
