@@ -115,7 +115,7 @@
                 }
               },
               "required": ["value", "props"],
-              "additionalProperties": false
+              "additionalProperties": true
             }
           }
         }
