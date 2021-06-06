@@ -1,6 +1,6 @@
 {
   "name": "bach-json-schema",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "JSON Schema definition for the bach.json format",
   "main": "index.js",
   "scripts": {
